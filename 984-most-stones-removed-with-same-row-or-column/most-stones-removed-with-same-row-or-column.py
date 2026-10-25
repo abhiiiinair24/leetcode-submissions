@@ -21,36 +21,34 @@ class Solution:
             size[parentU] += size[parentV]
 
     def removeStones(self, stones: list[list[int]]) -> int:
-        n = len(stones)
+
+        n  = len(stones)
 
         parent = [i for i in range(n)]
-        size = [1] * n
+        size = [1]* n
 
-        rowMap = {}
-        colMap = {}
+        rowmap ={}
+        colmap = {}
 
-        for stoneIndex, (row, col) in enumerate(stones):
+        for stoneind, (row,col) in enumerate(stones):
+            if row in rowmap:
+                previousRow = rowmap[row]
+                self.unionBySize(previousRow,stoneind,parent,size)
 
-            if row in rowMap:
-                previousStone = rowMap[row]
-                self.unionBySize(
-                    stoneIndex, previousStone, parent, size
-                )
             else:
-                rowMap[row] = stoneIndex
-
-            if col in colMap:
-                previousStone = colMap[col]
-                self.unionBySize(
-                    stoneIndex, previousStone, parent, size
-                )
+                rowmap[row] = stoneind
+            
+            if col in colmap:
+                previousCol = colmap[col]
+                self.unionBySize(previousCol,stoneind,parent,size)
             else:
-                colMap[col] = stoneIndex
+                colmap[col] = stoneind
+        
+        cnt = 0
+        for stoneind in range(n):
+            if self.findParent(stoneind,parent) == stoneind:
+                cnt +=1
 
-        components = 0
+        return n - cnt
 
-        for stoneIndex in range(n):
-            if self.findParent(stoneIndex, parent) == stoneIndex:
-                components += 1
-
-        return n - components
+   
