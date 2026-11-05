@@ -13,7 +13,7 @@ class Solution:
             return dp[ind][target]
         
         nottake = self.memoisation(ind-1,target,dp,stones)
-        take = False
+        take = 0
         if target >= stones[ind]:
             take = stones[ind] + self.memoisation(ind-1,target-stones[ind],dp,stones)
         
